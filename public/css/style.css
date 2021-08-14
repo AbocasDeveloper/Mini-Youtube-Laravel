@@ -1,0 +1,28 @@
+.video-list .panel-body{
+    padding-left: 0px;
+}
+
+.video-image-mask{
+    width: 350px;
+    height: 250px;
+    overflow: hidden;
+}
+
+.video-image-mask .video-image{
+    width: 105%;
+    height: 105%;
+}
+
+.video-title{
+    font-weight: bold;
+    font-size: 18 px;
+}
+
+.video-title a{
+    color: #444;
+}
+
+video{
+    width: 75%;
+    height: auto;
+}
