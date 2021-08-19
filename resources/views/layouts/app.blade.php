@@ -87,6 +87,13 @@
         </nav>
 
         @yield('content')
+
+        {{--<footer class="col-md-11 col-md-offset-1">
+            <br><br><br><br><br><hr>
+            Mini YouTube Laravel - Abocas Developer 2021
+            <hr><br><br><br><br><br>
+        </footer>--}}
+
     </div>
 
     <!-- Scripts -->

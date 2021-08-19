@@ -57,7 +57,6 @@ class VideoController extends Controller
             $video->video_path = $video_path;
         }
 
-
         $video->save();
 
         return redirect()->route('home')->with(array(
@@ -73,7 +72,6 @@ class VideoController extends Controller
 
         return new Response($file, 200);
     }
-
 
     /**
      * Método que nos devuelve el video, que coincida con el nombre que le pasamos
@@ -92,6 +90,101 @@ class VideoController extends Controller
 
         return view('video.detail', array(
             'video' => $video
+        ));
+    }
+
+    public function delete($video_id){
+
+        $user = \Auth::user();
+        $video = Video::find($video_id);
+        $comments = Comment::where('video_id', $video_id)->get();
+
+        if($user && $video->user_id == $user->id){
+
+            //Eliminar comentarios
+            if($comments && count($comments) >= 1){
+                foreach($comments as $comment){
+                    $comment->delete();
+                }
+            }
+
+            //Eliminar ficheros (Portada y Video)
+            Storage::disk('images')->delete($video->image);
+            Storage::disk('videos')->delete($video->video_path);
+
+            //Eliminar registro
+            $video->delete();
+
+            $message = array('message' => 'Video eliminado correctamente');
+        }
+        else{
+            $message = array('message' => 'El video no ha podido eliminarse');
+        }
+
+        return redirect()->route('home')->with($message);
+    }
+
+    public function edit($video_id){
+
+        $user = \Auth::user();
+        $video = Video::findOrFail($video_id);
+
+        if($user && $video->user_id == $user->id){
+           
+            return view('video.edit', array(
+                'video' => $video
+            ));
+        }
+        else{
+            return redirect()->route('home');
+        }
+    }
+
+    public function update($video_id, Request $request){
+        //Validar formulario
+        $validateData = $this->validate($request, [
+            'title' => 'required|min:5',
+            'description' => 'required'
+        ]);
+
+        $video = Video::findOrFail($video_id);
+        $user = \Auth::user();
+
+        $video->user_id = $user->id;
+        $video->title = $request->input('title');
+        $video->description = $request->input('description');
+
+        //Subida de la miniatura
+        $image = $request->file('image');
+        if($image){
+            
+            //Eliminar fichero antiguo
+            Storage::disk('images')->delete($video->image);
+
+            $image_path = time().$image->getClientOriginalName();
+            \Storage::disk('images')->put($image_path, \File::get($image));
+            
+            $video->image = $image_path;
+        }
+
+        //Subida de video
+        $video_file = $request->file('video');
+        if($video_file){
+
+            //Eliminar fichero antiguo
+            Storage::disk('videos')->delete($video->video_path);
+
+            $video_path = time().$video_file->getClientOriginalName();
+            \Storage::disk('videos')->put($video_path, \File::get($video_file));
+
+            //Asignamos el nuevo
+            $video->video_path = $video_path;
+        }
+
+        $video->update();
+
+        return redirect()->route('home')->with(array(
+            "message" => '¡¡El video se ha actualizado correctamente!!'
         ));
     }
 }

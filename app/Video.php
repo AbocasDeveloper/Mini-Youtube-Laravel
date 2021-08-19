@@ -10,7 +10,7 @@ class Video extends Model
 
     //Relación One To Many -- 1 video puede tener muchos comentarios
     public function comments(){
-        return $this->hasMany('App\Comment');
+        return $this->hasMany('App\Comment')->orderBy('id', 'desc');
     }
 
     //Relación Muchos a Uno -- Videos de 1 usuario
