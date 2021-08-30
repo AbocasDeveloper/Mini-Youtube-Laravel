@@ -80,6 +80,12 @@ Route::post('/update-video/{video_id}', array(
     'uses' => 'VideoController@update'
 ));
 
+Route::get('/buscar/{search?}', [
+    'as' => 'videoSearch',
+    'middleware' => 'auth',
+    'uses' => 'VideoController@search'
+]);
+
 
 //Rutas del controlador de Comentarios
 

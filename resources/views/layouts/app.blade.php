@@ -42,7 +42,7 @@
                         &nbsp;
                     </ul>
 
-                    <form action="" class="navbar-form navbar-left" role="search">
+                    <form action="{{ url('/buscar') }}" class="navbar-form navbar-left" role="search">
                         <div class="form-group">
                             <input type="text" class="form-control" placeholder="BUSCADOR" name="search">
                         </div>

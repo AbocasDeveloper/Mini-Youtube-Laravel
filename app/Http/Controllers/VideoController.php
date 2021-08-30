@@ -187,4 +187,25 @@ class VideoController extends Controller
             "message" => '¡¡El video se ha actualizado correctamente!!'
         ));
     }
+
+    public function search($search = null){
+
+        //Para que funcione correctamente la busqueda
+        if(is_null($search)){
+            $search = \Request::get('search');
+
+            //Redirigimos para que la ruta se vea correctamente y no como antes
+            //(buscar?search=$search)
+            return redirect()->route('videoSearch', array(
+                'search' => $search
+            ));
+        }
+
+        $videos = Video::where('title', 'LIKE', '%'.$search.'%')->paginate(5);
+
+        return view('video.search', array(
+            'videos' => $videos,
+            'search' => $search
+        ));
+    }
 }
