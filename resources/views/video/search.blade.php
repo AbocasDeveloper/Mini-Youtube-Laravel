@@ -10,17 +10,32 @@
     @extends('layouts.app')
 
     @section('content')
-    <center>
     <div class="container">
         <div class="row">
 
             <div class="container">
-                <h2>Busqueda realizada: <strong>{{$search}}</strong></h2>
+                <div class="col-md-4">
+                    <h2>Busqueda realizada: <strong>{{$search}}</strong></h2>
+                <br>
+                </div>
+
+                <div class="col-md-8">
+                    <form action="{{ url('/buscar/'.$search) }}" class="col-md-4 pull-righ" method="get">
+                        <label for="filter">Ordenar</label>
+                        <select name="filter" class="form-control">
+                            <option value="new">Más nuevos</option>
+                            <option value="old">Más antiguos</option>
+                            <option value="alfa">A - Z</option>
+                        </select>
+                        <input type="submit" value="Ordenar" class="btn-filter btn btn-sm btn-primary">
+                    </form>
+                </div>
+
+                <div class="clearfix"></div>
                 @include('video.videosList')
             </div>
         </div>
     </div>
-    </center>
     @endsection
 </body>
 </html>

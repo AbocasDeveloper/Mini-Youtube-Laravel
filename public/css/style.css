@@ -26,3 +26,8 @@ video{
     width: 75%;
     height: auto;
 }
+
+.btn-filter{
+    display: block;
+    margin-top: 5px;
+}
